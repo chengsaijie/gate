@@ -9,8 +9,11 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Verify public login page
+        env:
+          EDGE_ENTRY: ${{ vars.EDGE_ENTRY }}
         run: |
+          hostname="${EDGE_ENTRY%:443}"
           curl --fail --silent --show-error --retry 3 --retry-all-errors --max-time 30 \
-            https://gate-edge.chengsaijie-gate.workers.dev/login -o /tmp/gate-login.html
+            "https://${hostname}/login" -o /tmp/gate-login.html
           test -s /tmp/gate-login.html
           echo 'Proxy login page is reachable from the GitHub runner.'
