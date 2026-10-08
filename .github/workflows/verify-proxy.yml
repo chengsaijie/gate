@@ -1,0 +1,16 @@
+name: Verify deployed proxy
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verify public login page
+        run: |
+          curl --fail --silent --show-error --retry 3 --retry-all-errors --max-time 30 \
+            https://gate-edge.chengsaijie-gate.workers.dev/login -o /tmp/gate-login.html
+          test -s /tmp/gate-login.html
+          echo 'Proxy login page is reachable from the GitHub runner.'
