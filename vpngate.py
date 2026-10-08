@@ -304,7 +304,7 @@ EDGE_HOSTS = [
     if h.strip()
 ]
 
-NODES_URL = os.environ.get("NODES_URL", "https://YOUR_GITHUB_USERNAME.github.io/gate/nodes.txt")
+NODES_URL = os.environ.get("NODES_URL", "https://chengsaijie.github.io/gate/nodes.txt")
 
 def build_nodes_text(data):
     """生成纯节点行版本 (无注释): 每行 = 入口地址#名字$sstp://..."""
@@ -357,6 +357,8 @@ def write_outputs(data):
 # main
 # ---------------------------------------------------------------------------
 def main():
+    if not WORKER_CHECK_URL.startswith("https://") or "你的域名" in WORKER_CHECK_URL:
+        die("请先配置 CHECK_WORKER / GitHub Secret DOMAIN 为自己的检测 Worker 地址")
     session = requests.Session()
     rows, source = fetch_vpngate()
     raw_count = len(rows)
@@ -400,7 +402,7 @@ def main():
     log("WEBSITE", f"生成 {os.path.relpath(data_path, REPO_DIR)}")
     log("WEBSITE", f"生成 {os.path.relpath(html_path, REPO_DIR)}")
     log("WEBSITE", f"生成 {os.path.relpath(nodes_path, REPO_DIR)}")
-    log("USAGE", f"自动轮换: 把 {NODES_URL} 填入 edgetunnel 后台「自定义优选IP」框 (一次配置, 之后每 30 分钟自动更新)")
+    log("USAGE", f"自动轮换: 把 {NODES_URL} 填入 edgetunnel 后台「自定义优选IP」框，更新周期由 GitHub Actions 工作流设置")
     log("WEBSITE", "完成 (GitHub Pages 部署由 workflow 执行)")
 
 if __name__ == "__main__":
