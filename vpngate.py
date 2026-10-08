@@ -251,8 +251,12 @@ def check_one(node, session):
         exit_info = j.get("exit") or {}
         if exit_info:
             asn = exit_info.get("asn") or {}
+            location = exit_info.get("location") or exit_info
             org = asn.get("org") or asn.get("name") or ""
-            out["exit"] = {"ip": exit_info.get("ip"), "country": exit_info.get("country"), "country_code": exit_info.get("country_code"), "city": exit_info.get("city"), "continent": exit_info.get("continent"), "asn": asn.get("asn"), "org": org, "type": asn.get("type"), "is_datacenter": exit_info.get("is_datacenter")}
+            out["exit"] = {"ip": exit_info.get("ip"), "country": location.get("country"), "country_code": location.get("country_code"), "city": location.get("city"), "continent": location.get("continent"), "asn": asn.get("asn"), "org": org, "type": asn.get("type"), "is_datacenter": exit_info.get("is_datacenter")}
+            if ok and location.get("country") and location.get("country_code"):
+                out["country"] = location["country"]
+                out["country_code"] = location["country_code"]
             out["residential"] = classify_network(out["host"], org, exit_info.get("is_datacenter"))
         else:
             out["residential"] = classify_network(out["host"], None, None)
@@ -289,7 +293,7 @@ def build_outputs(results, raw_count, sstp_count, source):
         grp["nodes"].sort(key=lambda n: (n.get("latency_ms") is None, n.get("latency_ms") or 0, n["host"]))
         by_country[name] = grp
 
-    data = {"generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"), "source": source, "worker": WORKER_CHECK_URL, "stats": stats, "countries": by_country, "available": available}
+    data = {"generated_at": datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M:%S UTC"), "source": source, "stats": stats, "countries": by_country, "available": available}
     return data
 
 # edgetunnel 入口地址池
