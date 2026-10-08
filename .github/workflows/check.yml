@@ -52,6 +52,7 @@ jobs:
           CHECK_CONCURRENCY: '16'
           CHECK_TIMEOUT: '90'
           NODES_URL: https://chengsaijie.github.io/gate/nodes.txt
+          HOSTS_ENTRY: ${{ vars.EDGE_ENTRY }}
 
       - name: Configure Pages
         uses: actions/configure-pages@v5
