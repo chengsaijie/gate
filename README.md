@@ -1,3 +1,5 @@
+> **v2rayN 24 小时自动刷新接入**：请先阅读 [Windows 接入与验收说明](docs/v2rayn-24h.md)。本项目输出的 `nodes.txt` 是 edgetunnel 的 `$sstp://` 链式代理输入，**不是**能直接导入 v2rayN 的订阅；必须先由 edgetunnel 生成合法的 VLESS 等订阅。Windows 自动启动工具见 [install-v2rayn-watchdog.ps1](windows/install-v2rayn-watchdog.ps1)。
+
 # VPNGate SSTP 家宽节点（edgetunnel 链式代理） 🚀
 
 自动抓取 [VPN Gate](https://www.vpngate.net/) 的 SSTP 家宽/机房节点，调用检测 Worker 逐个验证可用性，按国家分组、标注住宅/机房，生成可直接通过 **URL 自动轮换** 的节点清单。**每 30 分钟自动更新一次。**
