@@ -1,6 +1,13 @@
 name: VPN Gate Node Check
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/check.yml'
+      - 'vpngate.py'
+      - 'requirements.txt'
+      - 'web/**'
   schedule:
     # Run every 30 minutes (GitHub Actions cron runs in UTC; dispatch can be delayed).
     - cron: '17,47 * * * *'
